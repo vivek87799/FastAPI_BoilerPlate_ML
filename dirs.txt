@@ -1,0 +1,13 @@
+.
+./backend
+./backend/app
+./backend/app/api
+./backend/app/api/routes
+./backend/app/db
+./backend/app/models
+./backend/app/services
+./backend/app/utils
+./backend/tests
+./backend/tests/api
+./backend/tests/api/routes
+
