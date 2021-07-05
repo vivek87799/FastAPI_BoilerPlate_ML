@@ -1,0 +1,41 @@
+version: '3.3'
+services:
+  server:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend/:/backend/
+    command: uvicorn app.api.server:app --reload --workers 1 --host 0.0.0.0 --port 8000
+    env_file:
+      - ./backend/.env
+    ports:
+      - 8000:8000
+    links:
+      - db
+  db:
+    image : mongo:latest
+    hostname: mongo_host
+    # container_name: mongodb
+    environment:
+      - MONGO_INITDB_DATABASE=boilerplate_db
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    volumes:
+      - ./init-db.js:/docker-entrypoint-initdb.d/init-db.js:ro
+      - /home/chitti/boilerplate_db/database:/data/db
+    ports:
+      - 27017:27017
+ #    restart: unless-stopped
+
+  # mongodb:
+  #   image : mongo
+  #   container_name: mongodb
+  #   environment:
+  #       - MONGO_INITDB_DATABASE=mongoDbBoilerPlate
+  #       - MONGO_INITDB_ROOT_USERNAME=admin
+  #       - MONGO_INITDB_ROOT_PASSWORD=admin
+  #   volumes:
+  #       - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+  #   ports:
+  #       - 27017:27017
